@@ -75,4 +75,4 @@ y_int[y_pred > 0.5] = 1
 print('Classification report {}'.format(classification_report(y, y_int, zero_division=0)))
 print('Confusion matrix {}'.format(multilabel_confusion_matrix(y, y_int)))
 print('Accuracy is {}'.format(accuracy_score(y,y_int)))
-print('Roc-auc score is {}'.format(roc_auc_score(y, y_pred)))
+print('Roc-auc score is {}'.format(roc_auc_score(y, y_pred))) 
