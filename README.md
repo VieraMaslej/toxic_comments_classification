@@ -2,7 +2,6 @@
 
 ## The impact of text pre-processing methods on the performance of deep learning models for the toxic comments classification
 
-### Authors
 Viera Maslej Kresnakova, Martin Sarnovsky, Peter Butka, Kristina Machova
 
 ### Abstract
