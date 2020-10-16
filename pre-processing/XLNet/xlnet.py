@@ -60,7 +60,7 @@ x = tf.keras.layers.Dense(6 , activation = tf.nn.sigmoid )(x)
 model = tf.keras.Model(inputs = [input_1, input_2 ] , outputs = [x])
 model.summary()
 
-path= "model_distilBERT.h5"
+path= "model_xlnet.h5"
 checkpoint = ModelCheckpoint(filepath=path, monitor='val_precision', verbose=1, save_best_only=True, mode='max', save_weights_only=True)
 model.compile(optimizer=Adam(lr=3e-5),loss=tf.keras.losses.binary_crossentropy, metrics=tf.keras.metrics.Precision())
 
@@ -68,7 +68,7 @@ model.compile(optimizer=Adam(lr=3e-5),loss=tf.keras.losses.binary_crossentropy, 
 history = model.fit([train_id,train_mask], y_train, batch_size=32, epochs=5, callbacks=checkpoint, validation_split=0.1)
 
 # Loading model...
-model.load_weights('model_distilBERT.h5')
+model.load_weights('model_xlnet.h5')
 y_pred = model.predict([test_id, test_mask])
 
 y_int = np.zeros_like(y_pred)
