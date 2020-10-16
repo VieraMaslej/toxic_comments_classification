@@ -4,7 +4,7 @@ import os
 import tensorflow as tf
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tqdm import *
-from transformers import BertTokenizer, TFBertForSequenceClassification
+from transformers import BertTokenizer, TFBertForSequenceClassification, TFBertModel
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.metrics import AUC, Accuracy
 from sklearn.metrics import classification_report, multilabel_confusion_matrix, roc_auc_score, average_precision_score, recall_score, precision_score, matthews_corrcoef, accuracy_score, f1_score
