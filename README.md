@@ -11,9 +11,9 @@ The emergence of anti-social behaviour in online environments presents a serious
 Dataset available on https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/data
 
 #### Embeddings
-Glove pre-trained embeddings: https://nlp.stanford.edu/projects/glove/
-FastText pre-trained embeddings: https://fasttext.cc/
-Gensim Word2vec: https://radimrehurek.com/gensim/models/word2vec.html
-Transformers - Models and tokenizers : https://huggingface.co/transformers/
+Glove pre-trained embeddings: https://nlp.stanford.edu/projects/glove/ <br>
+FastText pre-trained embeddings: https://fasttext.cc/ <br>
+Gensim Word2vec: https://radimrehurek.com/gensim/models/word2vec.html <br>
+Transformers - Models and tokenizers : https://huggingface.co/transformers/ <br>
 
 
