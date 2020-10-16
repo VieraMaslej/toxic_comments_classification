@@ -23,8 +23,9 @@ tokenizer = Tokenizer(num_words=max_features))
 tokenized_test_sentences = tokenizer.texts_to_sequences(test_sentences)
 test_padding = pad_sequences(tokenized_test_sentences, maxlen)
 
-# load model
+############# load model #############################################
 model = load_model('model_name.hdf5')
+######################################################################
 
 # predict
 y_pred = model.predict(test_padding)
@@ -32,7 +33,7 @@ y_pred = model.predict(test_padding)
 # evalution
 print('Roc-auc score is {}'.format(roc_auc_score(y, y_pred)))
 
-# propabilities to integer
+# probabilities to integer
 y_int = np.zeros_like(y_pred)
 y_int[y_pred > 0.5] = 1
 
