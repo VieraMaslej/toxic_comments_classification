@@ -22,7 +22,7 @@ train = pd.read_csv(r"train.csv")
 test = pd.read_csv(r"test.csv")
 test_labels = pd.read_csv(r"test_labels.csv")
 
-EMBEDDING_FILE = f'glove.twitter.27B.200d.txt' 
+EMBEDDING_FILE = f'glove.twitter.27B.200d.txt' #or glove.840B.300d.txt
 
 test = pd.concat([test, test_labels], axis=1)
 test = test[test['toxic']!=-1]
