@@ -13,7 +13,7 @@ from tensorflow.python.keras.preprocessing.text import Tokenizer
 from tensorflow.python.keras.preprocessing.sequence import pad_sequences
 
 
-embed_size = 200 
+embed_size = 200 # 300 for gloveCC and FastText
 max_features = 20000 
 maxlen = 200 
 
@@ -22,7 +22,7 @@ train = pd.read_csv(r"train.csv")
 test = pd.read_csv(r"test.csv")
 test_labels = pd.read_csv(r"test_labels.csv")
 
-EMBEDDING_FILE = f'glove.twitter.27B.200d.txt' #or glove.840B.300d.txt
+EMBEDDING_FILE = f'glove.twitter.27B.200d.txt' # or glove.840B.300d.txt or fasttext_wiki.vec
 
 test = pd.concat([test, test_labels], axis=1)
 test = test[test['toxic']!=-1]
