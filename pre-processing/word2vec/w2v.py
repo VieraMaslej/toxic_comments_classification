@@ -13,7 +13,7 @@ from tensorflow.python.keras.preprocessing.text import Tokenizer
 from tensorflow.python.keras.preprocessing.sequence import pad_sequences
 
 
-embed_size = 200 # 300 for gloveCC and FastText
+embed_size = 300 
 max_features = 20000 
 maxlen = 200 
 
@@ -21,6 +21,16 @@ print('Loading data...')
 train = pd.read_csv(r"train.csv")
 test = pd.read_csv(r"test.csv")
 test_labels = pd.read_csv(r"test_labels.csv")
+
+test = pd.concat([test, test_labels], axis=1)
+test = test[test['toxic']!=-1]
+
+classes = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
+y_train = train[classes].values
+y_test = test[classes].values
+
+train_sentences = train["comment_text"].fillna("fillna")
+test_sentences = test["comment_text"].fillna("fillna")
 
 # 1. create custom embeddings 
 words = list()
@@ -38,16 +48,6 @@ name = 'w2v.txt'
 model.wv.save_word2vec_format(name, binary = False)
 
 EMBEDDING_FILE = 'w2v.txt' # load embeddings
-
-test = pd.concat([test, test_labels], axis=1)
-test = test[test['toxic']!=-1]
-
-classes = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
-y_train = train[classes].values
-y_test = test[classes].values
-
-train_sentences = train["comment_text"].fillna("fillna")
-test_sentences = test["comment_text"].fillna("fillna")
 
 tokenizer = Tokenizer(num_words=max_features)
 tokenizer.fit_on_texts(list(train_sentences))
