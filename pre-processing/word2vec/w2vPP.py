@@ -13,7 +13,7 @@ from tensorflow.python.keras.preprocessing.text import Tokenizer
 from tensorflow.python.keras.preprocessing.sequence import pad_sequences
 
 
-embed_size = 200 # 300 for gloveCC and FastText
+embed_size = 300
 max_features = 20000 
 maxlen = 200 
 
@@ -32,7 +32,7 @@ y_test = test[classes].values
 train_sentences = train["comment_text"].fillna("fillna")
 test_sentences = test["comment_text"].fillna("fillna")
 
-print('Preprocessing train')
+print('Preprocessing train') 
 train = list()
 for i in train_sentences:
     tokens = word_tokenize(i)
