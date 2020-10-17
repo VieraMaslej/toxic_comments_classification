@@ -52,7 +52,7 @@ for word, i in word_index.items():
 kfold = KFold(n_splits=10)
 cvscores = []
 
-for train, test in kfold.split(train_padding, y):
+for train in kfold.split(train_padding, y):
     
 #####################################################################################
 #                                 FFNN                                              #
