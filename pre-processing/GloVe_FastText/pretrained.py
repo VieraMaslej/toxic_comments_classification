@@ -88,5 +88,3 @@ print('Accuracy is {}'.format(accuracy_score(y_test,y_int)))
 print('Classification report {}'.format(classification_report(y_test, y_int, zero_division=0)))
 print('Confusion matrix {}'.format(multilabel_confusion_matrix(y_test, y_int)))
 print('Roc-auc score is {}'.format(roc_auc_score(y_test, y_pred)))
-
-
