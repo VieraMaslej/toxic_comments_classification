@@ -33,8 +33,6 @@ tokenizer.fit_on_texts(list(train_sentences))
 tokenized_train_sentences = tokenizer.texts_to_sequences(train_sentences)
 train_padding = pad_sequences(tokenized_train_sentences, maxlen)
 
-X_train, X_val, y_train, y_val = train_test_split(train_padding, y, test_size=0.10, random_state=42)
-
 def get_coefs(word, *arr): return word, np.asarray(arr, dtype='float32')
 embeddings_index = dict(get_coefs(*o.rstrip().rsplit(' ')) for o in open(EMBEDDING_FILE, encoding='utf8'))
 
@@ -52,7 +50,7 @@ for word, i in word_index.items():
 kfold = KFold(n_splits=10)
 cvscores = []
 
-for train in kfold.split(train_padding, y):
+for train, val in kfold.split(train_padding, y):
     
 #####################################################################################
 #                                 FFNN                                              #
@@ -78,12 +76,12 @@ for train in kfold.split(train_padding, y):
   checkpoint = ModelCheckpoint(saved_model, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
 
   # training
-  history = model.fit(X_train, y_train, batch_size=32, epochs=5, callbacks=[checkpoint], validation_data=(X_val, Y_val))
+  history = model.fit(train_padding[train], y[train], batch_size=32, epochs=5, callbacks=[checkpoint], validation_data = train_padding[val], y[val])
   
   # load model
   model = load_model('model.hdf5')
   # evalute on validation set
-  scores = model.evaluate(X_val, y_val)
+  scores = model.evaluate(train_padding[val], y[val])
     
   print("%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
   cvscores.append(scores[1] * 100)
