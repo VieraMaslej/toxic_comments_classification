@@ -11,7 +11,7 @@ from keras.optimizers import Adam
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from tensorflow.python.keras.preprocessing.text import Tokenizer
 from tensorflow.python.keras.preprocessing.sequence import pad_sequences
-
+from sklearn.model_selection import StratifiedKFold, cross_val_score, KFold
 
 embed_size = 200 # 300 for gloveCC and fasttext
 max_features = 20000 
