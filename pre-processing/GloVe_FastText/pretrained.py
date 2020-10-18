@@ -59,6 +59,8 @@ for word, i in word_index.items():
 # cross validation        
 kfold = KFold(n_splits=10)
 cvscores = []
+accscores = []
+rocscorec = []
 
 for train, test in kfold.split(train_padding, y):
     
@@ -94,9 +96,17 @@ for train, test in kfold.split(train_padding, y):
     y_int = np.zeros_like(y_pred)
     y_int[y_pred > 0.5] = 1
 
-    print('Accuracy is {}'.format(accuracy_score(y_test,y_int)))
+    accuracy = accuracy_score(y_test,y_int)
+    print('Accuracy is {}'.format(accuracy))
+    accscores.append(accuracy * 100)
+    
+    rocauc = roc_auc_score(y_test, y_pred)
+    print('Roc-auc score is {}'.format(rocauc))
+    rocscore.append(rocauc * 100)
+    
     print('Classification report {}'.format(classification_report(y_test, y_int, zero_division=0)))
     print('Confusion matrix {}'.format(multilabel_confusion_matrix(y_test, y_int)))
-    print('Roc-auc score is {}'.format(roc_auc_score(y_test, y_pred)))
-    
+        
 print("%.2f%% (+/- %.2f%%)" % (np.mean(cvscores), np.std(cvscores)))
+print("Test accuracy is: {} %.2f%% (+/- %.2f%%)" % (np.mean(accscores), np.std(accscores)))
+print("Test roc-auc is: {} %.2f%% (+/- %.2f%%)" % (np.mean(rocscores), np.std(rocscores)))
