@@ -79,37 +79,58 @@ for word, i in word_index.items():
     embedding_vector = embeddings_index.get(word)
     if embedding_vector is not None:
         embedding_matrix[i] = embedding_vector
+        
+# cross validation        
+kfold = KFold(n_splits=10)
+cvscores = []
+accscores = []
+rocscorec = []
 
-inputs = Input(shape=(maxlen,))
-x = Embedding(max_features, embed_size, weights=[embedding_matrix])(inputs)
-x = SpatialDropout1D(0.2)(x)
-x = Bidirectional(LSTM(128, return_sequences=True,dropout=0.1,recurrent_dropout=0.1))(x)
-x = Conv1D(64, kernel_size = 3, padding = "valid", kernel_initializer = "glorot_uniform")(x)
-avg_pool = GlobalAveragePooling1D()(x)
-max_pool = GlobalMaxPooling1D()(x)
-x = concatenate([avg_pool, max_pool])
-x = Dense(64, activation='relu')(x)
-x = Dropout(0.2)(x)
-output = Dense(6, activation='sigmoid')(x)
-model = Model(inputs=inputs, outputs=output)
-model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['acc'])
-print(model.summary())
+for train, test in kfold.split(train_padding, y):
+    
+    inputs = Input(shape=(maxlen,))
+    x = Embedding(max_features, embed_size, weights=[embedding_matrix])(inputs)
+    x = SpatialDropout1D(0.2)(x)
+    x = Bidirectional(LSTM(128, return_sequences=True,dropout=0.1,recurrent_dropout=0.1))(x)
+    x = Conv1D(64, kernel_size = 3, padding = "valid", kernel_initializer = "glorot_uniform")(x)
+    avg_pool = GlobalAveragePooling1D()(x)
+    max_pool = GlobalMaxPooling1D()(x)
+    x = concatenate([avg_pool, max_pool])
+    x = Dense(64, activation='relu')(x)
+    x = Dropout(0.2)(x)
+    output = Dense(6, activation='sigmoid')(x)
+    model = Model(inputs=inputs, outputs=output)
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['acc'])
+    print(model.summary())
 
-saved_model = "model_glove_twitter.hdf5"
-checkpoint = ModelCheckpoint(saved_model, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
+    saved_model = "model_glovePP.hdf5"
+    checkpoint = ModelCheckpoint(saved_model, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
 
-print('Training model...')
-history = model.fit(train_padding, y_train, batch_size=32, epochs=5, callbacks=[checkpoint], validation_split=0.1)
+    print('Training model...')
+    history = model.fit(train_padding, y_train, batch_size=32, epochs=5, callbacks=[checkpoint], validation_split=0.1)
 
-print("Loading model....")
-model = load_model('model_glove_twitter.hdf5')
-y_pred = model.predict(test_padding)
+    scores = model.evaluate(train_padding[test], y[test])
+    print("%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
+    cvscores.append(scores[1] * 100)
 
-y_int = np.zeros_like(y_pred)
-y_int[y_pred > 0.5] = 1
+    print("Loading model....")
+    model = load_model('model_glovePP.hdf5')
+    y_pred = model.predict(test_padding)
 
-print('Accuracy is {}'.format(accuracy_score(y_test,y_int)))
-print('Classification report {}'.format(classification_report(y_test, y_int, zero_division=0)))
-print('Confusion matrix {}'.format(multilabel_confusion_matrix(y_test, y_int)))
-print('Roc-auc score is {}'.format(roc_auc_score(y_test, y_pred)))
+    y_int = np.zeros_like(y_pred)
+    y_int[y_pred > 0.5] = 1
 
+    accuracy = accuracy_score(y_test,y_int)
+    print('Accuracy is {}'.format(accuracy))
+    accscores.append(accuracy)
+    
+    rocauc = roc_auc_score(y_test, y_pred)
+    print('Roc-auc score is {}'.format(rocauc))
+    rocscore.append(rocauc)
+    
+    print('Classification report {}'.format(classification_report(y_test, y_int, zero_division=0)))
+    print('Confusion matrix {}'.format(multilabel_confusion_matrix(y_test, y_int)))
+        
+print("%.2f%% (+/- %.2f%%)" % (np.mean(cvscores), np.std(cvscores)))
+print("Test accuracy is: {} %.2f (+/- %.2f)" %  (np.mean(accscores), np.std(accscores)))
+print("Test roc-auc is: {} %.2f (+/- %.2f)" % (np.mean(rocscores), np.std(rocscores)))
