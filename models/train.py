@@ -22,7 +22,7 @@ maxlen = 200
 
 # load data
 train = pd.read_csv(r"train.csv")
-EMBEDDING_FILE = f'C:/Users/student/Vierka/glove.840B.300d.txt' # GloVe CC 300D
+EMBEDDING_FILE = f'glove.840B.300d.txt' # GloVe CC 300D
 
 classes = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
 y = train[classes].values
