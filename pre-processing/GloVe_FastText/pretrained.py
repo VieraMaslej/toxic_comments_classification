@@ -98,15 +98,15 @@ for train, test in kfold.split(train_padding, y):
 
     accuracy = accuracy_score(y_test,y_int)
     print('Accuracy is {}'.format(accuracy))
-    accscores.append(accuracy * 100)
+    accscores.append(accuracy)
     
     rocauc = roc_auc_score(y_test, y_pred)
     print('Roc-auc score is {}'.format(rocauc))
-    rocscore.append(rocauc * 100)
+    rocscore.append(rocauc)
     
     print('Classification report {}'.format(classification_report(y_test, y_int, zero_division=0)))
     print('Confusion matrix {}'.format(multilabel_confusion_matrix(y_test, y_int)))
         
 print("%.2f%% (+/- %.2f%%)" % (np.mean(cvscores), np.std(cvscores)))
-print("Test accuracy is: {} %.2f%% (+/- %.2f%%)" % (np.mean(accscores), np.std(accscores)))
-print("Test roc-auc is: {} %.2f%% (+/- %.2f%%)" % (np.mean(rocscores), np.std(rocscores)))
+print("Test accuracy is: {} %.2f%% (+/- %.2f%%)" (np.mean(accscores), np.std(accscores)))
+print("Test roc-auc is: {} %.2f%% (+/- %.2f%%)" (np.mean(rocscores), np.std(rocscores)))
