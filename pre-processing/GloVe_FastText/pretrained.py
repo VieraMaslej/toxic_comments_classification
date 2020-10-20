@@ -110,3 +110,37 @@ for train, test in kfold.split(train_padding, y):
 print("%.2f%% (+/- %.2f%%)" % (np.mean(cvscores), np.std(cvscores)))
 print("Test accuracy is: {} %.2f (+/- %.2f)" %  (np.mean(accscores), np.std(accscores)))
 print("Test roc-auc is: {} %.2f (+/- %.2f)" % (np.mean(rocscores), np.std(rocscores)))
+
+
+
+#########################################################################################################
+#                                         OPTIMIZE                                                      #
+#########################################################################################################
+import scipy
+ 
+def thr_to_accuracy(params, Y_test, predictions):
+ thr0, thr1, thr2, thr3, thr4, thr5 = params
+ return -(f1_score(Y_test[:,0], np.array(predictions[:,0]>thr0, dtype=np.int)) +f1_score(Y_test[:,1], np.array(predictions[:,1]>thr1, dtype=np.int)) + f1_score(Y_test[:,2], np.array(predictions[:,2]>thr2, dtype=np.int))+ f1_score(Y_test[:,3], np.array(predictions[:,3]>thr3, dtype=np.int))+ f1_score(Y_test[:,4], np.array(predictions[:,4]>thr4, dtype=np.int))+ f1_score(Y_test[:,5], np.array(predictions[:,5]>thr5, dtype=np.int)))
+# return -((roc_auc_score(Y_test[:,0], np.array(predictions[:,0]>thr0, dtype=np.int)) +roc_auc_score(Y_test[:,1], np.array(predictions[:,1]>thr1, dtype=np.int)) + roc_auc_score(Y_test[:,2], np.array(predictions[:,2]>thr2, dtype=np.int))+ roc_auc_score(Y_test[:,3], np.array(predictions[:,3]>thr3, dtype=np.int))+ roc_auc_score(Y_test[:,4], np.array(predictions[:,4]>thr4, dtype=np.int))+ roc_auc_score(Y_test[:,5], np.array(predictions[:,5]>thr5, dtype=np.int)))/6)
+ 
+thr_all = scipy.optimize.fmin(thr_to_accuracy, args=(y, y_pred), x0=[0.5, 0.5, 0.5, 0.5, 0.5, 0.5])
+ 
+print(thr_all)
+ 
+y_pred[y_pred[:,0] > thr_all[0], 0] = 1
+y_pred[y_pred[:,0] < thr_all[0], 0] = 0
+ 
+y_pred[y_pred[:,1] > thr_all[1], 1] = 1
+y_pred[y_pred[:,1] < thr_all[1], 1] = 0
+ 
+y_pred[y_pred[:,2] > thr_all[2], 2] = 1
+y_pred[y_pred[:,2] < thr_all[2], 2] = 0
+ 
+y_pred[y_pred[:,3] > thr_all[3], 3] = 1
+y_pred[y_pred[:,3] < thr_all[3], 3] = 0
+ 
+y_pred[y_pred[:,4] > thr_all[4], 4] = 1
+y_pred[y_pred[:,4] < thr_all[4], 4] = 0
+ 
+y_pred[y_pred[:,5] > thr_all[5], 5] = 1
+y_pred[y_pred[:,5] < thr_all[5], 5] = 0
