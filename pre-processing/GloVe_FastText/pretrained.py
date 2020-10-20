@@ -28,7 +28,7 @@ test = pd.concat([test, test_labels], axis=1)
 test = test[test['toxic']!=-1]
 
 classes = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
-y_train = train[classes].values
+y = train[classes].values
 y_test = test[classes].values
 
 train_sentences = train["comment_text"].fillna("fillna")
@@ -83,7 +83,7 @@ for train, test in kfold.split(train_padding, y):
     checkpoint = ModelCheckpoint(saved_model, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
 
     print('Training model...')
-    history = model.fit(train_padding, y_train, batch_size=32, epochs=5, callbacks=[checkpoint], validation_split=0.1)
+    history = model.fit(train_padding, y, batch_size=32, epochs=5, callbacks=[checkpoint], validation_split=0.1)
 
     scores = model.evaluate(train_padding[test], y[test])
     print("%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
@@ -123,7 +123,7 @@ def thr_to_accuracy(params, Y_test, predictions):
  return -(f1_score(Y_test[:,0], np.array(predictions[:,0]>thr0, dtype=np.int)) +f1_score(Y_test[:,1], np.array(predictions[:,1]>thr1, dtype=np.int)) + f1_score(Y_test[:,2], np.array(predictions[:,2]>thr2, dtype=np.int))+ f1_score(Y_test[:,3], np.array(predictions[:,3]>thr3, dtype=np.int))+ f1_score(Y_test[:,4], np.array(predictions[:,4]>thr4, dtype=np.int))+ f1_score(Y_test[:,5], np.array(predictions[:,5]>thr5, dtype=np.int)))
 # return -((roc_auc_score(Y_test[:,0], np.array(predictions[:,0]>thr0, dtype=np.int)) +roc_auc_score(Y_test[:,1], np.array(predictions[:,1]>thr1, dtype=np.int)) + roc_auc_score(Y_test[:,2], np.array(predictions[:,2]>thr2, dtype=np.int))+ roc_auc_score(Y_test[:,3], np.array(predictions[:,3]>thr3, dtype=np.int))+ roc_auc_score(Y_test[:,4], np.array(predictions[:,4]>thr4, dtype=np.int))+ roc_auc_score(Y_test[:,5], np.array(predictions[:,5]>thr5, dtype=np.int)))/6)
  
-thr_all = scipy.optimize.fmin(thr_to_accuracy, args=(y, y_pred), x0=[0.5, 0.5, 0.5, 0.5, 0.5, 0.5])
+thr_all = scipy.optimize.fmin(thr_to_accuracy, args=(y_test, y_pred), x0=[0.5, 0.5, 0.5, 0.5, 0.5, 0.5])
  
 print(thr_all)
  
