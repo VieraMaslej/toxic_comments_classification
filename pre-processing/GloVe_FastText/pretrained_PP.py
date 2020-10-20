@@ -28,7 +28,7 @@ test = pd.concat([test, test_labels], axis=1)
 test = test[test['toxic']!=-1]
 
 classes = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
-y_train = train[classes].values
+y = train[classes].values
 y_test = test[classes].values
 
 train_sentences = train["comment_text"].fillna("fillna")
@@ -107,7 +107,7 @@ for train, test in kfold.split(train_padding, y):
     checkpoint = ModelCheckpoint(saved_model, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
 
     print('Training model...')
-    history = model.fit(train_padding, y_train, batch_size=32, epochs=5, callbacks=[checkpoint], validation_split=0.1)
+    history = model.fit(train_padding, y, batch_size=32, epochs=5, callbacks=[checkpoint], validation_split=0.1)
 
     scores = model.evaluate(train_padding[test], y[test])
     print("%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
