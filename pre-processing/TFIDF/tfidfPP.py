@@ -63,7 +63,7 @@ for train, test in kfold.split(X_train, y_train):
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['acc'])
     print(model.summary())
 
-    saved_model = "model_glove_twitter.hdf5"
+    saved_model = "model_tfidf.hdf5"
     checkpoint = ModelCheckpoint(saved_model, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
 
     print('Training model...')
@@ -74,7 +74,7 @@ for train, test in kfold.split(X_train, y_train):
     cvscores.append(scores[1] * 100)
 
     print("Loading model....")
-    model = load_model('model_glove_twitter.hdf5')
+    model = load_model('model_tfidf.hdf5')
     y_pred = model.predict(X_test)
 
     y_int = np.zeros_like(y_pred)
