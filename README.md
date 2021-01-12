@@ -5,15 +5,15 @@
 Viera Maslej Kresnakova, Martin Sarnovsky, Peter Butka, Kristina Machova
 
 ## Bibtex
-@article{maslej2020comparison,
-  title={Comparison of Deep Learning Models and Various Text Pre-Processing Techniques for the Toxic Comments Classification},
-  author={Maslej-Kre{\v{s}}{\v{n}}{\'a}kov{\'a}, Viera and Sarnovsk{\`y}, Martin and Butka, Peter and Machov{\'a}, Krist{\'\i}na},
-  journal={Applied Sciences},
-  volume={10},
-  number={23},
-  pages={8631},
-  year={2020},
-  publisher={Multidisciplinary Digital Publishing Institute}
+@article{maslej2020comparison, <br>
+  title={Comparison of Deep Learning Models and Various Text Pre-Processing Techniques for the Toxic Comments Classification}, <br>
+  author={Maslej-Kre{\v{s}}{\v{n}}{\'a}kov{\'a}, Viera and Sarnovsk{\`y}, Martin and Butka, Peter and Machov{\'a}, Krist{\'\i}na}, <br>
+  journal={Applied Sciences}, <br>
+  volume={10}, <br>
+  number={23}, <br>
+  pages={8631}, <br>
+  year={2020}, <br>
+  publisher={Multidisciplinary Digital Publishing Institute} <br>
 }
 
 ### Abstract
